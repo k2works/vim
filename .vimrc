@@ -179,8 +179,10 @@ if dein#load_state(s:dein_dir)
   call dein#add('suy/vim-ctrlp-commandline')
   call dein#add('rking/ag.vim')
   call dein#add('mattn/ctrlp-matchfuzzy')
-  " ランゲージサーバー
+  " 開発
   call dein#add('neoclide/coc.nvim')
+  call dein#add('airblade/vim-gitgutter')
+  call dein#add('tpope/vim-fugitive')
 
   call dein#end()
   call dein#save_state()
@@ -250,7 +252,7 @@ if executable('ag')
 endif
 
 "----------------------------------------------------------
-" ランゲージサーバー
+" 開発
 "----------------------------------------------------------
 "LightLineにcoc.nvimのステータスを載せます
 let g:lightline = {
@@ -284,3 +286,11 @@ nmap <silent> <space>rn <Plug>(coc-rename)
 "スペースfmtでFormat
 nmap <silent> <space>fmt <Plug>(coc-format)
 
+"vim-fugitive
+nnoremap <leader>ga :Git add %:p<CR><CR>
+nnoremap <leader>gc :Git commit<CR><CR>
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gp :Git push<CR>
+nnoremap <leader>gd :Gdiffsplit<CR>
+nnoremap <leader>gl :Gclog<CR>
+nnoremap <leader>gb :Git blame<CR>
