@@ -135,6 +135,18 @@ nnoremap <up> gk
 " バックスペースキーの有効化
 set backspace=indent,eol,start
 
+" 入力モード時のカーソル移動
+noremap! <C-p> <Up>
+noremap! <C-n> <Down>
+noremap! <C-b> <Left>
+noremap! <C-f> <Right>
+
+" 入力モードでカーソルの形状を変える
+let &t_ti.="\e[1 q"
+let &t_SI.="\e[5 q"
+let &t_EI.="\e[1 q"
+let &t_te.="\e[0 q"
+
 "----------------------------------------------------------
 " バッファリスト
 "----------------------------------------------------------
@@ -302,12 +314,3 @@ nmap <silent> <space>rf <Plug>(coc-references)
 nmap <silent> <space>rn <Plug>(coc-rename)
 "スペースfmtでFormat
 nmap <silent> <space>fmt <Plug>(coc-format)
-
-"----------------------------------------------------------
-" KeyMap
-"----------------------------------------------------------
-noremap! <C-p> <Up>
-noremap! <C-n> <Down>
-noremap! <C-b> <Left>
-noremap! <C-f> <Right>
-
