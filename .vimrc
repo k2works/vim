@@ -121,102 +121,96 @@ if &term =~ "xterm"
 endif
 
 "----------------------------------------------------------
-" NeoBundle
+" パッケージマネージャ
 "----------------------------------------------------------
-if has('vim_starting')
-    " 初回起動時のみruntimepathにNeoBundleのパスを指定する
-    set runtimepath+=~/.vim/bundle/neobundle.vim/
-
-    " NeoBundleが未インストールであればgit cloneする
-    if !isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
-        echo "install NeoBundle..."
-        :call system("git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim")
+let $CACHE = expand('~/.cache')
+if !isdirectory($CACHE)
+  call mkdir($CACHE, 'p')
+endif
+if &runtimepath !~# '/dein.vim'
+  let s:dein_dir = fnamemodify('dein.vim', ':p')
+  if !isdirectory(s:dein_dir)
+    let s:dein_dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'
+    if !isdirectory(s:dein_dir)
+      execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
     endif
+  endif
+  execute 'set runtimepath^=' .. substitute(
+        \ fnamemodify(s:dein_dir, ':p') , '[/\\]$', '', '')
 endif
 
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" インストールするVimプラグインを以下に記述
-" NeoBundle自身を管理
-NeoBundleFetch 'Shougo/neobundle.vim'
-" カラースキームmolokai
-NeoBundle 'tomasr/molokai'
-" ステータスラインの表示内容強化
-NeoBundle 'itchyny/lightline.vim'
-" インデントの可視化
-NeoBundle 'Yggdroot/indentLine'
-" 末尾の全角半角空白文字を赤くハイライト
-NeoBundle 'bronson/vim-trailing-whitespace'
-" 構文エラーチェック
-NeoBundle 'scrooloose/syntastic'
-" 多機能セレクタ
-NeoBundle 'ctrlpvim/ctrlp.vim'
-" CtrlPの拡張プラグイン. 関数検索
-NeoBundle 'tacahiroy/ctrlp-funky'
-" CtrlPの拡張プラグイン. コマンド履歴検索
-NeoBundle 'suy/vim-ctrlp-commandline'
-" CtrlPの検索にagを使う
-NeoBundle 'rking/ag.vim'
-" プロジェクトに入ってるESLintを読み込む
-NeoBundle 'pmsorhaindo/syntastic-local-eslint.vim'
-
-" vimのlua機能が使える時だけ以下のVimプラグインをインストールする
-if has('lua')
-    " コードの自動補完
-    NeoBundle 'Shougo/neocomplete.vim'
-    " スニペットの補完機能
-    NeoBundle "Shougo/neosnippet"
-    " スニペット集
-    NeoBundle 'Shougo/neosnippet-snippets'
+if &compatible
+  set nocompatible
 endif
 
-" Vim ランゲージサーバプロトコル
-NeoBundle 'neoclide/coc.nvim'
-NeoBundle 'itchyny/lightline.vim'
+let s:dein_dir = expand('~/.cache/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
-call neobundle#end()
+" dein.vimが存在していない場合はgithubからclone
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+endif
 
-" ファイルタイプ別のVimプラグイン/インデントを有効にする
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+
+  call dein#add('Shougo/dein.vim')
+
+  " カラースキーム
+  call dein#add('tomasr/molokai')
+  call dein#add('raphamorim/lucario')
+  call dein#add('jacoborus/tender.vim')
+  " ステータスライン表示
+  call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
+  call dein#add('itchyny/lightline.vim')
+  " インデントの可視化
+  call dein#add('Yggdroot/indentLine')
+  " 末尾の全角半角空白文字を赤くハイライト
+  call dein#add('bronson/vim-trailing-whitespace')
+  " 構文エラーチェック
+  call dein#add('scrooloose/syntastic')
+  " 多機能セレクタ
+  call dein#add('ctrlpvim/ctrlp.vim')
+  call dein#add('tacahiroy/ctrlp-funky')
+  call dein#add('vim-ctrlp-commandline')
+  call dein#add('rking/ag.vim')
+  call dein#add('mattn/ctrlp-matchfuzzy')
+  " ランゲージサーバー
+  call dein#add('neoclide/coc.nvim')
+
+  call dein#end()
+  call dein#save_state()
+endif
+
 filetype plugin indent on
+syntax enable
 
-" 未インストールのVimプラグインがある場合、インストールするかどうかを尋ねてくれるようにする設定
-NeoBundleCheck
-
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
 "----------------------------------------------------------
 " カラースキーム
 "----------------------------------------------------------
-if neobundle#is_installed('molokai')
-    colorscheme molokai " カラースキームにmolokaiを設定する
-endif
-
+colorscheme lucario " カラースキームにlucarioを設定する
 set t_Co=256 " iTerm2など既に256色環境なら無くても良い
 syntax enable " 構文に色を付ける
 
 "----------------------------------------------------------
-" neocomplete・neosnippetの設定
+" ステータスライン表示
 "----------------------------------------------------------
-if neobundle#is_installed('neocomplete.vim')
-    " Vim起動時にneocompleteを有効にする
-    let g:neocomplete#enable_at_startup = 1
-    " smartcase有効化. 大文字が入力されるまで大文字小文字の区別を無視する
-    let g:neocomplete#enable_smart_case = 1
-    " 3文字以上の単語に対して補完を有効にする
-    let g:neocomplete#min_keyword_length = 3
-    " 区切り文字まで補完する
-    let g:neocomplete#enable_auto_delimiter = 1
-    " 1文字目の入力から補完のポップアップを表示
-    let g:neocomplete#auto_completion_start_length = 1
-    " バックスペースで補完のポップアップを閉じる
-    inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
-
-    " エンターキーで補完候補の確定. スニペットの展開もエンターキーで確定
-    imap <expr><CR> neosnippet#expandable() ? "<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "<C-y>" : "<CR>"
-    " タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ
-    imap <expr><TAB> pumvisible() ? "<C-n>" : neosnippet#jumpable() ? "<Plug>(neosnippet_expand_or_jump)" : "<TAB>"
-endif
+set showtabline=2
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'luna'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 "----------------------------------------------------------
-" Syntastic
+" 構文エラーチェック
 "----------------------------------------------------------
 " 構文エラー行に「>>」を表示
 let g:syntastic_enable_signs = 1
@@ -237,7 +231,7 @@ let g:syntastic_mode_map = { 'mode': 'passive',
                            \ 'passive_filetypes': [] }
 
 "----------------------------------------------------------
-" CtrlP
+" 多機能セレクタ
 "----------------------------------------------------------
 let g:ctrlp_match_window = 'order:ttb,min:20,max:20,results:100' " マッチウインドウの設定. 「下部に表示, 大きさ20行で固定, 検索結果100件」
 let g:ctrlp_show_hidden = 1 " .(ドット)から始まるファイルも検索対象にする
@@ -256,32 +250,7 @@ if executable('ag')
 endif
 
 "----------------------------------------------------------
-" deoplete
-"----------------------------------------------------------
-let g:deoplete#enable_at_startup = 0
-let g:python3_host_prog = '/usr/local/bin/python3'
-"Tab補完の設定
-inoremap <silent><expr> <Tab>
-\ pumvisible() ? "\<C-n>" :
-\ <SID>check_back_space() ? "\<TAB>" :
-\ deoplete#manual_complete()
-function! s:check_back_space() abort
-let col = col('.') - 1
-return !col || getline('.')[col - 1] =~ '\s'
-endfunction
-"Shift+Tabで前の補完候補へ
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>
-
-"----------------------------------------------------------
-" vim-airline
-"----------------------------------------------------------
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'minimalist'
-let g:airline_theme = 'tomorrow'
-let g:airline_theme = 'molokai'
-
-"----------------------------------------------------------
-" Language Server Protocol
+" ランゲージサーバー
 "----------------------------------------------------------
 "LightLineにcoc.nvimのステータスを載せます
 let g:lightline = {
@@ -314,3 +283,4 @@ nmap <silent> <space>rf <Plug>(coc-references)
 nmap <silent> <space>rn <Plug>(coc-rename)
 "スペースfmtでFormat
 nmap <silent> <space>fmt <Plug>(coc-format)
+
