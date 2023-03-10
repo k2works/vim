@@ -176,7 +176,7 @@ if dein#load_state(s:dein_dir)
   " 多機能セレクタ
   call dein#add('ctrlpvim/ctrlp.vim')
   call dein#add('tacahiroy/ctrlp-funky')
-  call dein#add('vim-ctrlp-commandline')
+  call dein#add('suy/vim-ctrlp-commandline')
   call dein#add('rking/ag.vim')
   call dein#add('mattn/ctrlp-matchfuzzy')
   " ランゲージサーバー
