@@ -51,6 +51,21 @@ ln -s .vimrc $HOME/.vimrc
 : call coc#util#install()
 ```
 
+[Copilot.vim](https://github.com/github/copilot.vim)
+
+[Easiest way to update Neovim on Ubuntu](https://medium.com/@leonardormlins/easiest-way-to-update-neovim-on-ubuntu-a283c66d5322)
+```
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install neovim
+```
+[Ubuntu: Vimの最新バージョンインストール](https://qiita.com/Fell/items/8619385da8e09a59c787)
+```
+sudo add-apt-repository ppa:jonathonf/vim
+sudo apt update
+sudo apt install vim
+```
+
 **[⬆ back to top](#構成)**
 
 ### 配置
