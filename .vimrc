@@ -3,6 +3,8 @@ scriptencoding utf-8
 " ↑1行目は読み込み時の文字コードの設定
 " ↑2行目はVim Script内でマルチバイトを使う場合の設定
 " Vim scritptにvimrcも含まれるので、日本語でコメントを書く場合は先頭にこの設定が必要になる
+let mapleader = "," "リーダーキーマップ
+set autowrite " 自動保存モード
 
 "----------------------------------------------------------
 " 文字
@@ -183,6 +185,8 @@ if dein#load_state(s:dein_dir)
   call dein#add('airblade/vim-gitgutter')
   call dein#add('tpope/vim-fugitive')
   call dein#add('neoclide/coc.nvim')
+  call dein#add('fatih/vim-go')
+  call dein#add('AndrewRadev/splitjoin.vim')
 
   call dein#end()
   call dein#save_state()
@@ -424,3 +428,38 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+"vim-go
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+
+nnoremap <leader>a :cclose<CR>
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+let g:go_list_type = "quickfix"
+
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <leader>T  <Plug>(go-test-func)
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+
+let g:go_def_mode = 'godef'
+let g:go_decls_includes = "func,type"
+let g:go_auto_sameids = 1
