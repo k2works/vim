@@ -440,3 +440,8 @@ autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 let g:go_def_mode = 'godef'
 let g:go_decls_includes = "func,type"
 let g:go_auto_sameids = 1
+
+let g:go_debug_windows = {
+      \ 'vars':       '60vnew',
+      \ 'stack':      '10new',
+\ }
