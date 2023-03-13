@@ -189,6 +189,8 @@ if dein#load_state(s:dein_dir)
   call dein#add('fatih/vim-go')
   call dein#add('AndrewRadev/splitjoin.vim')
   call dein#add('puremourning/vimspector')
+  call dein#add('vim-test/vim-test')
+  call dein#add('tpope/vim-dispatch')
 
   call dein#end()
   call dein#save_state()
@@ -483,3 +485,11 @@ nmap <Leader>dk <Plug>VimspectorRestart
 nmap <Leader>dh <Plug>VimspectorStepOut
 nmap <Leader>dl <Plug>VimspectorStepInto
 nmap <Leader>dj <Plug>VimspectorStepOver
+
+"vim-test
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+let g:test#strategy = 'dispatch'

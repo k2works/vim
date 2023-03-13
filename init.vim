@@ -169,6 +169,8 @@ NeoBundle 'neoclide/coc.nvim'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'AndrewRadev/splitjoin.vim'
 NeoBundle 'puremourning/vimspector'
+NeoBundle 'vim-test/vim-test'
+NeoBundle 'tpope/vim-dispatch'
 
 call neobundle#end()
 
@@ -460,3 +462,11 @@ nmap <Leader>dk <Plug>VimspectorRestart
 nmap <Leader>dh <Plug>VimspectorStepOut
 nmap <Leader>dl <Plug>VimspectorStepInto
 nmap <Leader>dj <Plug>VimspectorStepOver
+
+"vim-test
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+let g:test#strategy = 'dispatch'
