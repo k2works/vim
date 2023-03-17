@@ -66,6 +66,11 @@ sudo apt update
 sudo apt install vim
 ```
 
+[NeoVim: vimspector unavailable: Requires Vim compiled with +python3](https://stackoverflow.com/questions/74036547/neovim-vimspector-unavailable-requires-vim-compiled-with-python3)
+```
+pip3 install neovim
+```
+
 **[⬆ back to top](#構成)**
 
 ### 配置
