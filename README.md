@@ -71,6 +71,8 @@ sudo apt install vim
 pip3 install neovim
 ```
 
+[気をつけて！Git for Windowsにおける改行コード](https://qiita.com/uggds/items/00a1974ec4f115616580)
+
 **[⬆ back to top](#構成)**
 
 ### 配置
