@@ -51,7 +51,11 @@ ln -s .vimrc $HOME/.vimrc
 : call coc#util#install()
 ```
 
+[GitHub CLI](https://cli.github.com/)
+
 [Copilot.vim](https://github.com/github/copilot.vim)
+
+[GitHub Copilot in the CLI](https://github.com/github/gh-copilot)
 
 [Easiest way to update Neovim on Ubuntu](https://medium.com/@leonardormlins/easiest-way-to-update-neovim-on-ubuntu-a283c66d5322)
 ```
